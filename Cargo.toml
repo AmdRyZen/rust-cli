@@ -7,3 +7,18 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+futures = "0.3.5"
+mobc-redis = "0.5.3"
+mobc = "0.5.7"
+tokio = {version = "0.2.22", features = ["full"]}
+dotenv = "0.15.0"
+serde = { version = "1.0.71", features = ["derive"] }
+
+
+
+# release
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+opt-level = 3
