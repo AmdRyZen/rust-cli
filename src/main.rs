@@ -8,6 +8,8 @@ use mobc_redis::RedisConnectionManager;
 use mobc_redis::{Connection};
 use serde::{Deserialize, Serialize};
 use std::thread::sleep;
+use std::sync::Arc;
+use std::sync::Mutex;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
@@ -60,16 +62,16 @@ async fn _lpop(_redis_pool: mobc::Pool<RedisConnectionManager>) {
 
 
 async fn _test_action() {
-    loop {
-        let _ret = thread::spawn(|| {
-            for i in 0..2 {
-                println!("spawned thread print {}", i);
-                //thread::sleep(Duration::from_millis(10));
-            }
-        })
-            .join().unwrap();
-        sleep(Duration::new(1, 0));
-    }
-    //println!("_ret: {:#?}", _ret);
+    let lock_sub = Arc::new(Mutex::new(0));
+    let _ret = thread::spawn(move || {
+        for i in 0..8 {
+            let lock = Arc::clone(&lock_sub);
+            let mut num = lock.lock().unwrap();
+            *num += 2;
+            println!("spawned thread print {}", i);
+        }
+        println!("Result  : {}", *lock_sub.lock().unwrap());
+    })
+        .join().unwrap();
 }
 
