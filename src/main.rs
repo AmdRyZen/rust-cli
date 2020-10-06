@@ -44,6 +44,9 @@ async fn main() -> std::io::Result<()> {
         if _action == "test" {
             _test_action().await;
         }
+        if _action == "sleep" {
+            _sleep(redis_pool.clone()).await;
+        }
     }
 
     println!("success");
@@ -62,7 +65,7 @@ async fn _sleep(_redis_pool: mobc::Pool<RedisConnectionManager>) {
         let _ret = thread::spawn(move || {
             for i in 0..cpus {
                 println!("hi number {} from the spawned thread!", i);
-                thread::sleep(Duration::from_secs(1));
+                thread::sleep(Duration::from_secs(2));
             }
         })
             .join()
@@ -73,23 +76,35 @@ async fn _sleep(_redis_pool: mobc::Pool<RedisConnectionManager>) {
 }
 
 async fn _test_action() {
+    let _cpus = num_cpus::get();
     let lock_sub = Arc::new(Mutex::new(0));
     let lock_sub1 = Arc::new(Mutex::new(0));
-    let _ret = thread::spawn(move || {
-        for i in 0..8 {
+    let mut thread_list = vec![];
+
+    for i in 0..10 {
+        let lock = Arc::clone(&lock_sub);
+        let lock_v = Arc::clone(&lock_sub1);
+
+        let thandle = thread::spawn(move || {
             println!("spawned thread print {}", i);
 
-            let lock = Arc::clone(&lock_sub);
             let mut num = lock.lock().unwrap();
             *num += 2;
-
-            let lock_v = Arc::clone(&lock_sub1);
+            
             let mut v = lock_v.lock().unwrap();
             *v += bll::function1(100);
-        }
-        println!("Result  : {}", *lock_sub.lock().unwrap());
-        println!("Result1  : {}", *lock_sub1.lock().unwrap());
-    })
-    .join()
-    .unwrap();
+
+            //thread::sleep(Duration::from_secs(1));
+           
+        });
+        thread_list.push(thandle);
+    }
+
+    for handle in thread_list {
+        handle.join().unwrap();
+    }
+
+    
+    println!("Result  : {}", *lock_sub.lock().unwrap());
+    println!("Result1  : {}", *lock_sub1.lock().unwrap());
 }
