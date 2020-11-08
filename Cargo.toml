@@ -4,6 +4,15 @@ version = "0.1.0"
 authors = ["stefano <huzhichao502@gmail.com>"]
 edition = "2018"
 
+description = "rust-cli"
+homepage = "https://github.com/AmdRyZen/rust-cli.git"
+documentation = "https://github.com/AmdRyZen/rust-cli.git"
+readme = "README.md"
+keywords = ["cli", "command", "futures", "async"]
+categories = ["asynchronous", "concurrency"]
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/AmdRyZen/rust-cli.git"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
