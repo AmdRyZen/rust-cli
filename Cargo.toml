@@ -1,14 +1,14 @@
 [package]
-name = "rust-cli"
+name = "rust-cli-commands"
 version = "0.1.0"
 authors = ["stefano <huzhichao502@gmail.com>"]
 edition = "2018"
 
-description = "rust-cli"
+description = "rust-cli-commands"
 homepage = "https://github.com/AmdRyZen/rust-cli.git"
 documentation = "https://github.com/AmdRyZen/rust-cli.git"
 readme = "README.md"
-keywords = ["cli", "command", "futures", "async"]
+keywords = ["cli", "commands", "futures", "async"]
 categories = ["asynchronous", "concurrency"]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/AmdRyZen/rust-cli.git"
