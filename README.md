@@ -15,7 +15,7 @@ rust-cli
 
 ## 环境要求
 
-需要 Rust1.39+, actix_web2.0
+需要 Rust1.39+
 
 
 ## 框架定位
